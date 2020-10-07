@@ -1,65 +1,53 @@
 import React from 'react';
-import { Button } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
-
-const useStyles = (theme) => ({
-  container: {
-    display: 'flex',
-    flexWrap: 'wrap',
-  },
-  textField: {
-    marginLeft: theme.spacing(1),
-    marginRight: theme.spacing(1),
-    width: 200,
-  },
-});
+import { Button, Paper, Typography } from '@material-ui/core';
+import DateAndTimeRangeSelector from './DateAndTimeRangeSelector';
+import Header from './Header';
+import Schedule from './Schedule';
 
 class Scheduler extends React.Component {
-  render() {
-    const { classes } = this.props;
+  state = {
+    currentDateAndTimeRange: null,
+    schedule: [],
+  };
 
+  formRangeString(currentDateAndTimeRange) {
+    return `${currentDateAndTimeRange.date} from ${currentDateAndTimeRange.timeStart} to ${currentDateAndTimeRange.timeEnd}`;
+  }
+
+  addTimeRangeToSchedule() {
+    if (!this.state.currentDateAndTimeRange) return;
+    const currentRangeText = this.formRangeString(this.state.currentDateAndTimeRange.selectedValues);
+    if (this.state.schedule.find(item => {
+      return item.text === currentRangeText;
+    })) return;
+    this.setState((prevState) => ({
+      schedule: prevState.schedule.concat([{
+        id: Math.random(),
+        text: currentRangeText,
+      }]),
+    }));
+  }
+
+  render() {
     return (
-      <div>
-        <form className={classes.container} noValidate>
-          <TextField
-            id="date"
-            label="Date"
-            type="date"
-            className={classes.textField}
-            InputLabelProps={{
-              shrink: true,
-            }}
-          />
-          <TextField
-            id="time_start"
-            label="Start Time"
-            type="time"
-            className={classes.textField}
-            InputLabelProps={{
-              shrink: true,
-            }}
-            inputProps={{
-              step: 1800, // 30 minute increments
-            }}
-          />
-          <TextField
-            id="time_end"
-            label="End Time"
-            type="time"
-            className={classes.textField}
-            InputLabelProps={{
-              shrink: true,
-            }}
-            inputProps={{
-              step: 1800, // 30 minute increments
-            }}
-          />
-        </form>
-        <Button color="primary">Add Time Range To Schedule</Button>
-      </div>
+      <React.Fragment>
+        <Header text="Meeting Scheduler" />
+        <Paper variant="outlined" square>
+          <br />
+          <DateAndTimeRangeSelector onChange={(data) => {
+            this.setState({ currentDateAndTimeRange: data });
+          }} />
+          <br />
+          <Button variant="contained" color="primary" onClick={() => {
+            this.addTimeRangeToSchedule();
+          }}>Add Time Range To Schedule</Button>
+          {this.state.schedule.length
+            ? <Schedule ranges={this.state.schedule} />
+            : <div><br /><Typography>No Time Ranges Added</Typography><br /></div>}
+        </Paper>
+      </React.Fragment>
     );
   }
 }
 
-export default withStyles(useStyles)(Scheduler);
+export default Scheduler;

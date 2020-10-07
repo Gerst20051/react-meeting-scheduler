@@ -1,14 +1,14 @@
 import React from 'react';
-import { AppBar, Toolbar, Typography } from '@material-ui/core';
+import { AppBar, Box, Typography } from '@material-ui/core';
 
 export default function Header(props) {
   return (
     <AppBar position="static">
-      <Toolbar>
-        <Typography variant="h6">
+      <Box mx="auto" p={2}>
+        <Typography variant="h4" align="center">
           {props.text}
         </Typography>
-      </Toolbar>
+      </Box>
     </AppBar>
   );
 }

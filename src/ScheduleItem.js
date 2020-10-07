@@ -4,7 +4,7 @@ import { ListItem, ListItemText } from '@material-ui/core';
 function ScheduleItem(props) {
   return (
     <ListItem>
-      <ListItemText primary={props.text} />
+      <ListItemText primary={props.text} align="center" />
     </ListItem>
   );
 }

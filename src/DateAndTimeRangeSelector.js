@@ -6,11 +6,13 @@ const useStyles = (theme) => ({
   container: {
     display: 'flex',
     flexWrap: 'wrap',
+    justifyContent: 'center',
   },
   textField: {
+    height: 70,
     marginLeft: theme.spacing(1),
     marginRight: theme.spacing(1),
-    width: 200,
+    width: 180,
   },
 });
 

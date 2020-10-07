@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Paper, Typography } from '@material-ui/core';
+import { Box, Button, Divider, Paper, Typography } from '@material-ui/core';
 import DateAndTimeRangeSelector from './DateAndTimeRangeSelector';
 import Header from './Header';
 import Schedule from './Schedule';
@@ -33,17 +33,21 @@ class Scheduler extends React.Component {
       <React.Fragment>
         <Header text="Meeting Scheduler" />
         <Paper variant="outlined" square>
-          <br />
-          <DateAndTimeRangeSelector onChange={(data) => {
-            this.setState({ currentDateAndTimeRange: data });
-          }} />
-          <br />
-          <Button variant="contained" color="primary" onClick={() => {
-            this.addTimeRangeToSchedule();
-          }}>Add Time Range To Schedule</Button>
-          {this.state.schedule.length
-            ? <Schedule ranges={this.state.schedule} />
-            : <div><br /><Typography>No Time Ranges Added</Typography><br /></div>}
+          <Box align="center">
+            <br />
+            <DateAndTimeRangeSelector onChange={(data) => {
+              this.setState({ currentDateAndTimeRange: data });
+            }} />
+            <Button variant="contained" color="primary" onClick={() => {
+              this.addTimeRangeToSchedule();
+            }}>Add Time Range To Schedule</Button>
+            <br />
+            <br />
+            <Divider />
+            {this.state.schedule.length
+              ? <Schedule ranges={this.state.schedule} />
+              : <Box><br /><Typography>No Time Ranges Added</Typography><br /></Box>}
+          </Box>
         </Paper>
       </React.Fragment>
     );

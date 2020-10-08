@@ -11,7 +11,12 @@ class Scheduler extends React.Component {
   };
 
   formRangeString(currentDateAndTimeRange) {
-    return `${currentDateAndTimeRange.date} from ${currentDateAndTimeRange.timeStart} to ${currentDateAndTimeRange.timeEnd}`;
+    const date = currentDateAndTimeRange.date;
+    const timeStart = currentDateAndTimeRange.timeStart;
+    const timeEnd = currentDateAndTimeRange.timeEnd;
+    const timezone = currentDateAndTimeRange.timezone;
+    const matchingTimeNames = timeStart.slice(-2) === timeEnd.slice(-2);
+    return `${date} from ${matchingTimeNames ? timeStart.slice(0, -2) : timeStart}-${timeEnd} ${timezone}`;
   }
 
   addTimeRangeToSchedule() {

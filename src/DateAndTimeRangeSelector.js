@@ -16,6 +16,9 @@ const useStyles = (theme) => ({
   },
 });
 
+const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
 class DateAndTimeRangeSelector extends React.Component {
   state = {
     selectedValues: {
@@ -36,12 +39,30 @@ class DateAndTimeRangeSelector extends React.Component {
   }
 
   parseDate(input) {
-    // 2020-10-07 (YYYY-MM-DD)
-    return `Monday, March 20, 2020`;
+    // input `2020-10-07`(YYYY-MM-DD)
+    // output `Monday, March 20, 2020`
+    const date = new Date(input);
+    return `${dayNames[date.getDay()]}, ${monthNames[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
   }
 
   parseTime(input) {
-    return `02:00 PM ${this.state.selectedValues.timezone}`;
+    // input `14:00`
+    // output `2pm`
+    const hour = parseInt(input.split(':')[0], 0);
+    const minute = input.split(':')[1].slice(-3);
+    const isHourPm = hour >= 12;
+    const timeName = isHourPm ? 'pm' : 'am';
+    const parts = [];
+    if (hour === 0 || hour === 12) {
+      parts.push('12');
+    } else {
+      parts.push(isHourPm ? hour - 12 : hour);
+    }
+    if (minute === '30') {
+      parts.push(`:${minute}`); // let's only support 30 minute increments
+    }
+    parts.push(timeName);
+    return parts.join('');
   }
 
   render() {
@@ -61,7 +82,6 @@ class DateAndTimeRangeSelector extends React.Component {
             const date = event.target.value;
             this.setState((prevState) => {
               const newState = {
-                ...prevState,
                 selectedValues: {
                   ...prevState.selectedValues,
                   date: this.parseDate(date),
@@ -87,7 +107,6 @@ class DateAndTimeRangeSelector extends React.Component {
             const time = event.target.value;
             this.setState((prevState) => {
               const newState = {
-                ...prevState,
                 selectedValues: {
                   ...prevState.selectedValues,
                   timeStart: this.parseTime(time),
@@ -113,7 +132,6 @@ class DateAndTimeRangeSelector extends React.Component {
             const time = event.target.value;
             this.setState((prevState) => {
               const newState = {
-                ...prevState,
                 selectedValues: {
                   ...prevState.selectedValues,
                   timeEnd: this.parseTime(time),

@@ -5,7 +5,7 @@ import ScheduleItem from './ScheduleItem';
 
 const useStyles = makeStyles((theme) => ({
   list: {
-    marginBottom: theme.spacing(2),
+    marginBottom: theme.spacing(0),
   },
 }));
 

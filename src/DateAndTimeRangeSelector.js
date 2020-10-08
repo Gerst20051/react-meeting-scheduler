@@ -40,9 +40,9 @@ class DateAndTimeRangeSelector extends React.Component {
 
   parseDate(input) {
     // input `2020-10-07`(YYYY-MM-DD)
-    // output `Monday, March 20, 2020`
-    const date = new Date(input);
-    return `${dayNames[date.getDay()]}, ${monthNames[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
+    // output `Wednesday, October 7, 2020`
+    const date = new Date(input); // NOTE: input date is treated as utc
+    return `${dayNames[date.getUTCDay()]}, ${monthNames[date.getUTCMonth()]} ${date.getUTCDate()}, ${date.getUTCFullYear()}`;
   }
 
   parseTime(input) {
